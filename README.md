@@ -1,6 +1,6 @@
-# Punchbound
+## Punchbound
 
-An original 2D action-combat game, built incrementally in Godot 4.
+An 2D action-combat game, built incrementally in Godot 4.
 
 ## Current milestone: first opponent combat test
 
@@ -114,3 +114,6 @@ together: do their timing and uses feel clear? Gear is deferred until the
 core combat is proven. Prefer a small number of playstyle tradeoffs over
 stat inflation if gear later becomes useful. Final art, progression, Steam
 integration and mobile UI remain deferred.
+
+Note on assets:
+The current sprites and visual assets are AI-generated placeholders used during development and prototyping. They may be replaced or refined with original artwork later.
