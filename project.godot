@@ -25,6 +25,19 @@ jump={
 "events": [Object(InputEventKey,"physical_keycode":32)]
 }
 
+attack={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":74)]
+}
+crouch={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":83), Object(InputEventKey,"physical_keycode":4194322)]
+}
+restart={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":82)]
+}
+
 [rendering]
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

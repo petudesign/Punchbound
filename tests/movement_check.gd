@@ -21,6 +21,7 @@ func _check(condition: bool, message: String) -> void:
 
 func _run() -> void:
 	var arena = load("res://scenes/arena.tscn").instantiate()
+	arena.encounters_enabled = false
 	root.add_child(arena)
 	var player = arena.get_node("Player")
 	await _frames(5)
