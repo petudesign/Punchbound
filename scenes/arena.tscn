@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1"]
+
+[sub_resource type="RectangleShape2D" id="Floor"]
+size = Vector2(1152, 100)
+
+[sub_resource type="RectangleShape2D" id="Wall"]
+size = Vector2(40, 1800)
+
+[node name="Arena" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(576, 610)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("Floor")
+
+[node name="Visual" type="Polygon2D" parent="Floor"]
+polygon = PackedVector2Array(-576, -50, 576, -50, 576, 50, -576, 50)
+color = Color(0.15, 0.20, 0.27, 1)
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-20, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("Wall")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1172, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("Wall")
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(576, 560)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Margin" type="MarginContainer" parent="HUD"]
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+
+[node name="Instructions" type="Label" parent="HUD/Margin"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "PUNCHBOUND / MOVEMENT LAB\nA / D or arrow keys: move • Space: jump\nMilestone 1 — placeholder arena"
+autowrap_mode = 2

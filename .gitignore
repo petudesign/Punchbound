@@ -1,4 +1,7 @@
 # Logs
+.godot/
+exports/
+
 logs
 *.log
 npm-debug.log*
