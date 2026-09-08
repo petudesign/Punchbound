@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const UPPERCUT = preload("res://data/attacks/uppercut.tres")
+const DOWN_KICK = preload("res://data/attacks/down_kick.tres")
 
 @export var move_speed: float = 340.0
 @export var jump_speed: float = 610.0
@@ -13,6 +14,8 @@ var _jump_buffer_remaining: float = 0.0
 var _attack_buffer_remaining: float = 0.0
 var _attack_direction: float = 1.0
 var _uppercut_buffered: bool = false
+var _head_landing_cooldown: float = 0.0
+var _last_head_enemy: Node2D
 @onready var combat = $Combat
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -29,8 +32,14 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump"):
 		_jump_buffer_remaining = jump_buffer_time
 		_uppercut_buffered = Input.is_action_pressed("crouch") and is_on_floor()
+	if Input.is_action_just_pressed("crouch") and not is_on_floor() and not combat.attacking:
+		if combat.start_attack(DOWN_KICK):
+			velocity.y = maxf(velocity.y, 220.0)
 	if combat.freeze_remaining > 0.0:
 		return
+	_head_landing_cooldown = maxf(0.0, _head_landing_cooldown - delta)
+	if is_instance_valid(_last_head_enemy) and global_position.y > _last_head_enemy.global_position.y + 8.0:
+		_last_head_enemy = null
 	_attack_buffer_remaining = maxf(0.0, _attack_buffer_remaining - delta)
 	_jump_buffer_remaining = maxf(0.0, _jump_buffer_remaining - delta)
 	if combat.health <= 0 or combat.stun_remaining > 0.0:
@@ -73,12 +82,16 @@ func _physics_process(delta: float) -> void:
 	_update_visual()
 	var falling_speed: float = velocity.y
 	move_and_slide()
-	if falling_speed > 80.0:
-		for index in range(get_slide_collision_count()):
-			var collision := get_slide_collision(index)
-			var body := collision.get_collider()
-			if collision.get_normal().y < -0.5 and body.is_in_group("enemies"):
+	if falling_speed > 80.0 and _head_landing_cooldown <= 0.0:
+		for body in $HeadSensor.get_overlapping_bodies():
+			if body.is_in_group("enemies") and body != _last_head_enemy and global_position.y <= body.global_position.y:
+				global_position.y = body.global_position.y - 64.0
+				# Bounce away immediately so the enemy can never carry the player.
+				velocity.y = -260.0
 				body.get_node("Combat").stun(0.45)
+				_head_landing_cooldown = 0.28
+				_last_head_enemy = body
+				break
 
 
 func _update_visual() -> void:
@@ -86,6 +99,8 @@ func _update_visual() -> void:
 	if combat.attacking:
 		if combat.current_attack == UPPERCUT:
 			sprite.texture = $SpriteFrames.get_meta("uppercut")
+		elif combat.current_attack == DOWN_KICK:
+			sprite.texture = $SpriteFrames.get_meta("down_kick")
 		else:
 			sprite.texture = $SpriteFrames.get_meta("punch")
 		sprite.position.y = -69.0

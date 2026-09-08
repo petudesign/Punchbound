@@ -13,12 +13,22 @@ or F5 to run the project.
 | Jump | W / Up (Space also works) |
 | Uppercut | Hold S / Down, then press jump while grounded |
 | Crouch / duck high punches | Hold S or Down |
+| Down kick | Press S / Down while airborne |
 | Restart | R, or the button after death |
 
 The player stays anchored in the center. The supplied player poses are stored
 under `assets/player/` and currently drive idle, jump, uppercut, punch and crouch
 visual states. They are user-provided placeholder art for this prototype; the
 combat collision shapes remain separate from the image bounds.
+
+The Brawler enemy sheet is stored as extracted transparent frames under
+`assets/enemies/brawler/`; the source presentation sheet is not used as a
+texture. The extraction script is retained at `tools/extract_brawler.ps1`.
+
+Enemy bodies no longer physically carry the player. The player uses a small
+head sensor for a one-time stomp response, then bounces away; it does not stand
+on the enemy collision body. Airborne S/Down triggers the down kick and uses a
+separate downward hitbox.
 
 The player sprite is bottom-anchored to the arena floor and scaled to sit in
 the same visual range as the placeholder enemies. The earlier oversized,

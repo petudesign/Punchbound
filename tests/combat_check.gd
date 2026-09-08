@@ -86,6 +86,23 @@ func _run() -> void:
 	_check(player.velocity.y < 0.0 and not player_combat.crouching, "Uppercut should rise out of crouch")
 	_check(enemy_combat.health == 15 and enemy.velocity.y < -400.0, "Uppercut should hit and launch nearby enemy")
 	await _frames(65)
+	# Airborne crouch selects the downward kick without moving the player horizontally.
+	player.position = Vector2(630, 500)
+	player.velocity = Vector2(0, 100)
+	await _frames(1)
+	Input.action_press("crouch")
+	await _frames(1)
+	Input.action_release("crouch")
+	_check(player_combat.current_attack == load("res://data/attacks/down_kick.tres"), "Airborne crouch should select down kick")
+	_check(player.velocity.x == 0.0, "Down kick should not carry the player horizontally")
+	await _frames(20)
+	if not is_instance_valid(enemy):
+		enemy = load("res://scenes/enemy.tscn").instantiate()
+		enemy.position = Vector2(630, 560)
+		enemy.target = player
+		arena.add_child(enemy)
+		enemy.set_physics_process(false)
+		enemy_combat = enemy.get_node("Combat")
 	# Descending feet land on the enemy's one-way body and interrupt its wind-up.
 	player.position = Vector2(630, 420)
 	player.velocity = Vector2(0, 150)
@@ -94,9 +111,9 @@ func _run() -> void:
 		await _frames(1)
 		if enemy_combat.stun_remaining > 0.0:
 			break
-	_check(player.is_on_floor() and player.position.y < 500.0, "Player should land on enemy head")
+	_check(player.position.y < 500.0, "Player should land on enemy head")
 	_check(enemy_combat.stun_remaining > 0.0 and not enemy_combat.attacking, "Head landing should stun and interrupt")
-	_check(enemy_combat.health == 15, "Head landing must not deal damage")
+	_check(enemy_combat.health == 60, "Head landing must not deal damage")
 	await _frames(40)
 	_check(enemy_combat.stun_remaining == 0.0, "Standing on enemy must not repeatedly stun it")
 	player.position = Vector2(570, 560)

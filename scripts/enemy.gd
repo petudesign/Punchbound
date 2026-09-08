@@ -3,13 +3,17 @@ extends CharacterBody2D
 @export var move_speed: float = 125.0
 var target: CharacterBody2D
 @onready var combat = $Combat
+@onready var sprite: Sprite2D = $Sprite2D
+var hurt_remaining: float = 0.0
 
 
 func _ready() -> void:
 	combat.died.connect(_die)
+	combat.damaged.connect(func(_amount: int): hurt_remaining = 0.16)
 
 
 func _physics_process(delta: float) -> void:
+	hurt_remaining = maxf(0.0, hurt_remaining - delta)
 	if combat.freeze_remaining > 0.0:
 		return
 	if not is_on_floor():
@@ -30,6 +34,21 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x = combat.facing * move_speed
 	move_and_slide()
+	_update_visual()
+
+
+func _update_visual() -> void:
+	sprite.flip_h = combat.facing < 0.0
+	if hurt_remaining > 0.0:
+		sprite.texture = $SpriteFrames.get_meta("hit")
+	elif combat.stun_remaining > 0.0:
+		sprite.texture = $SpriteFrames.get_meta("guard")
+	elif combat.attacking:
+		sprite.texture = $SpriteFrames.get_meta("cross")
+	elif not is_zero_approx(velocity.x):
+		sprite.texture = $SpriteFrames.get_meta("walk")
+	else:
+		sprite.texture = $SpriteFrames.get_meta("idle")
 
 
 func _die() -> void:

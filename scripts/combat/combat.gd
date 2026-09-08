@@ -115,7 +115,7 @@ func receive_hit(data: Resource, direction: float) -> bool:
 
 
 func _attack_center() -> Vector2:
-	# Enemy punches pass above a crouching hurtbox; player crouch punches hit low.
+	# Enemy punches pass above a crouching hurtbox; down kick reaches below player.
 	var elevation: float = 18.0 if crouching and not enemy else current_attack.elevation
 	return Vector2(attack_facing * (19.0 + current_attack.reach / 2.0), -elevation)
 
