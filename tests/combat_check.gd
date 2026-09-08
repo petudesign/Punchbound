@@ -82,6 +82,7 @@ func _run() -> void:
 	Input.action_release("jump")
 	Input.action_release("crouch")
 	_check(player_combat.current_attack == load("res://data/attacks/uppercut.tres"), "Crouch jump must select uppercut")
+	_check(player.get_node("Sprite2D").texture == load("res://assets/player/uppercut.png"), "Uppercut should use the uppercut pose")
 	_check(player.velocity.y < 0.0 and not player_combat.crouching, "Uppercut should rise out of crouch")
 	_check(enemy_combat.health == 15 and enemy.velocity.y < -400.0, "Uppercut should hit and launch nearby enemy")
 	await _frames(65)

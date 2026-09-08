@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/combat/combat.gd" id="2"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" path="res://assets/player/guard.png" id="5"]
 [ext_resource type="Texture2D" path="res://assets/player/punch.png" id="6"]
 [ext_resource type="Texture2D" path="res://assets/player/crouch.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/player/jump.png" id="8"]
+[ext_resource type="Texture2D" path="res://assets/player/uppercut.png" id="9"]
 
 [sub_resource type="RectangleShape2D" id="Body"]
 resource_local_to_scene = true
@@ -28,14 +30,16 @@ shape = SubResource("Body")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("4")
-position = Vector2(0, -217)
-scale = Vector2(0.30, 0.30)
+position = Vector2(0, -69)
+scale = Vector2(0.10, 0.10)
 
 [node name="SpriteFrames" type="Node" parent="."]
 metadata/idle = ExtResource("4")
 metadata/guard = ExtResource("5")
 metadata/punch = ExtResource("6")
 metadata/crouch = ExtResource("7")
+metadata/jump = ExtResource("8")
+metadata/uppercut = ExtResource("9")
 
 [node name="Combat" type="Node2D" parent="."]
 script = ExtResource("2")

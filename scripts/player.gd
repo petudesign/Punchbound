@@ -84,10 +84,17 @@ func _physics_process(delta: float) -> void:
 func _update_visual() -> void:
 	sprite.flip_h = combat.facing < 0.0
 	if combat.attacking:
-		sprite.texture = $SpriteFrames.get_meta("punch")
+		if combat.current_attack == UPPERCUT:
+			sprite.texture = $SpriteFrames.get_meta("uppercut")
+		else:
+			sprite.texture = $SpriteFrames.get_meta("punch")
+		sprite.position.y = -69.0
 	elif combat.crouching:
 		sprite.texture = $SpriteFrames.get_meta("crouch")
+		sprite.position.y = -69.0
 	elif not is_on_floor():
-		sprite.texture = $SpriteFrames.get_meta("guard")
+		sprite.texture = $SpriteFrames.get_meta("jump")
+		sprite.position.y = -69.0
 	else:
 		sprite.texture = $SpriteFrames.get_meta("idle")
+		sprite.position.y = -69.0

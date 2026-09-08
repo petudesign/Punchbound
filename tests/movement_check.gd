@@ -26,6 +26,7 @@ func _run() -> void:
 	var player = arena.get_node("Player")
 	await _frames(5)
 	_check(player.is_on_floor(), "Player should settle on the floor")
+	_check(is_zero_approx(player.get_node("Sprite2D").global_position.y + 69.0 - player.position.y), "Sprite should use the floor anchor offset")
 	var start_x: float = player.position.x
 	Input.action_press("move_right")
 	await _frames(12)

@@ -16,9 +16,14 @@ or F5 to run the project.
 | Restart | R, or the button after death |
 
 The player stays anchored in the center. The supplied player poses are stored
-under `assets/player/` and currently drive idle, jump/guard, punch and crouch
+under `assets/player/` and currently drive idle, jump, uppercut, punch and crouch
 visual states. They are user-provided placeholder art for this prototype; the
 combat collision shapes remain separate from the image bounds.
+
+The player sprite is bottom-anchored to the arena floor and scaled to sit in
+the same visual range as the placeholder enemies. The earlier oversized,
+floating appearance came from centering a tall source image instead of aligning
+its alpha bounds to the feet.
 
 The first two encounters have one
 melee opponent, alternating sides; subsequent encounters have at most two,
