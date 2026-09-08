@@ -10,3 +10,4 @@ extends Resource
 @export var reach: float = 72.0
 @export var height: float = 26.0
 @export var elevation: float = 43.0
+@export var launch_speed: float = 85.0

@@ -33,6 +33,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _die() -> void:
+	set_collision_layer_value(4, false)
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.22)
 	tween.tween_callback(queue_free)

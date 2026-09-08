@@ -20,8 +20,8 @@ func _process(delta: float) -> void:
 		return
 	var hp: int = player.get_node("Combat").health
 	status.text = "PUNCHBOUND / COMBAT LAB     HP %d / 100     DEFEATED %d\n" % [hp, defeated]
-	status.text += "A/D or arrows: move   Space: jump   J: punch   S/Down: crouch   R: restart\n"
-	status.text += "Crouch under the yellow high punch. Move close and hit during the wind-up!" if hp > 0 else "DOWN — Press R or use Restart to try again."
+	status.text += "A/D or Left/Right: move + punch   W/Up: jump   S/Down: crouch   R: restart\n"
+	status.text += "Crouch + jump: uppercut. Land on enemies to stun. Yellow = incoming high punch." if hp > 0 else "DOWN — Press R or use Restart to try again."
 	if not encounters_enabled or hp <= 0:
 		return
 	if get_tree().get_nodes_in_group("enemies").is_empty():

@@ -9,9 +9,9 @@ or F5 to run the project.
 
 | Action | Key |
 | --- | --- |
-| Move | A/D or Left/Right |
-| Jump | Space |
-| Punch in facing direction | J (press for each punch) |
+| Move + directional punch | A/D or Left/Right (press punches, hold moves) |
+| Jump | W / Up (Space also works) |
+| Uppercut | Hold S / Down, then press jump while grounded |
 | Crouch / duck high punches | Hold S or Down |
 | Restart | R, or the button after death |
 
@@ -19,7 +19,11 @@ The first two encounters have one melee opponent; subsequent encounters have
 at most two. Each enemy takes three punches. Enemies approach, telegraph a
 high punch in yellow, attack, and recover. Punch during their wind-up to
 interrupt, duck under their strike, or use movement to avoid it. Crouching
-also permits a low punch; crouch-to-jump uppercut is deliberately deferred.
+also permits a low directional punch. Jumping from crouch triggers an uppercut
+that launches the target upward, with longer recovery than a normal punch.
+Landing on an enemy's head interrupts and stuns it for 0.45 seconds without
+damage. Remaining on its head does not refresh the stun. A cyan ring indicates
+stun. Enemies can still be passed from the side and below.
 
 Hits apply damage, knockback, stun, a white flash and brief local hitstop.
 The player has a short damage grace period to prevent simultaneous enemies
@@ -31,7 +35,9 @@ Movement retains immediate horizontal response, 80 ms coyote time and a
 100 ms jump buffer; punches have a 150 ms input buffer. Attack timing and
 damage live in `data/attacks/`; the shared combat component owns deliberately
 sized hit/hurt shapes independently of the placeholder body art. Actors do
-not physically block each other in this prototype.
+not physically block each other from the side. Enemy bodies use Godot's
+[one-way collision](https://docs.godotengine.org/en/stable/classes/class_collisionshape2d.html#class-collisionshape2d-property-one-way-collision)
+for head landings; damage still uses separate hit/hurt shapes.
 
 ## Environment audit — 2026-09-08
 
@@ -69,7 +75,10 @@ left/right movement, immediate stopping, jump, prevention of double jump,
 landing and wall containment. It passed on the audited Windows installation.
 The combat check covers startup/active timing, one hit per swing, directional
 misses, knockback/hitstop, crouch evasion, player damage/grace period, death,
-restart, enemy approach and replacement after defeat. Both checks passed.
+restart, enemy approach and replacement after defeat. It also covers directional
+input, normal jump versus crouch uppercut, launch, head landing without damage,
+stun expiry while standing on a head, side passage and no automatic repeated
+punches from holding a direction. Both checks passed.
 Editor import and a graphical OpenGL launch also completed without reported
 errors; the combat view was captured and visually inspected. Manual combat
 feel testing, resizing checks and macOS validation remain. The user has
@@ -79,6 +88,8 @@ already confirmed the original movement feels responsive.
 
 Playtest against enemies: is punch range understandable, is the yellow
 wind-up readable, and can you reliably duck and counter? Tune those before
-adding content. A crouch → jump + punch uppercut is the next requested attack
-idea; it should have a distinct purpose and recovery cost. Final art,
-progression, Steam integration and mobile UI remain deferred.
+adding content. Test directional punches, crouch uppercut and head landings
+together: do their timing and uses feel clear? Gear is deferred until the
+core combat is proven. Prefer a small number of playstyle tradeoffs over
+stat inflation if gear later becomes useful. Final art, progression, Steam
+integration and mobile UI remain deferred.

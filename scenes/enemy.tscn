@@ -8,7 +8,7 @@
 size = Vector2(38, 64)
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 1
 script = ExtResource("1")
 
@@ -19,6 +19,7 @@ color = Color(0.94, 0.32, 0.34, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -32)
 shape = SubResource("Body")
+one_way_collision = true
 
 [node name="Combat" type="Node2D" parent="."]
 script = ExtResource("2")

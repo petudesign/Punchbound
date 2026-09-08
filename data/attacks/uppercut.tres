@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+damage = 25
+startup = 0.02
+active = 0.18
+recovery = 0.40
+knockback = 100.0
+stun = 0.45
+hitstop = 0.07
+reach = 58.0
+height = 76.0
+elevation = 34.0
+launch_speed = 460.0
