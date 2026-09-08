@@ -9,14 +9,20 @@ or F5 to run the project.
 
 | Action | Key |
 | --- | --- |
-| Move + directional punch | A/D or Left/Right (press punches, hold moves) |
+| Turn + directional punch | A/D or Left/Right (press punches; player stays centered) |
 | Jump | W / Up (Space also works) |
 | Uppercut | Hold S / Down, then press jump while grounded |
 | Crouch / duck high punches | Hold S or Down |
 | Restart | R, or the button after death |
 
-The first two encounters have one melee opponent; subsequent encounters have
-at most two. Each enemy takes three punches. Enemies approach, telegraph a
+The player stays anchored in the center. The supplied player poses are stored
+under `assets/player/` and currently drive idle, jump/guard, punch and crouch
+visual states. They are user-provided placeholder art for this prototype; the
+combat collision shapes remain separate from the image bounds.
+
+The first two encounters have one
+melee opponent, alternating sides; subsequent encounters have at most two,
+one from each side. Each enemy takes three punches. Enemies approach, telegraph a
 high punch in yellow, attack, and recover. Punch during their wind-up to
 interrupt, duck under their strike, or use movement to avoid it. Crouching
 also permits a low directional punch. Jumping from crouch triggers an uppercut

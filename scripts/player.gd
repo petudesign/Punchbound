@@ -14,6 +14,7 @@ var _attack_buffer_remaining: float = 0.0
 var _attack_direction: float = 1.0
 var _uppercut_buffered: bool = false
 @onready var combat = $Combat
+@onready var sprite: Sprite2D = $Sprite2D
 
 
 func _physics_process(delta: float) -> void:
@@ -43,11 +44,11 @@ func _physics_process(delta: float) -> void:
 	$CollisionShape2D.position.y = -$CollisionShape2D.shape.size.y / 2.0
 	_coyote_remaining = coyote_time if is_on_floor() else maxf(0.0, _coyote_remaining - delta)
 
-	velocity.x = Input.get_axis("move_left", "move_right") * move_speed
-	if combat.crouching:
-		velocity.x *= 0.3
-	if not is_zero_approx(velocity.x) and not combat.attacking:
-		combat.facing = signf(velocity.x)
+	# The player is anchored in the arena. Direction keys turn and attack;
+	# enemies create the movement pressure from both sides.
+	velocity.x = 0.0
+	if not is_zero_approx(_attack_direction) and not combat.attacking and _attack_buffer_remaining > 0.0:
+		combat.facing = _attack_direction
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	if _jump_buffer_remaining > 0.0 and _coyote_remaining > 0.0:
@@ -69,6 +70,7 @@ func _physics_process(delta: float) -> void:
 		combat.facing = _attack_direction
 		if combat.start_attack():
 			_attack_buffer_remaining = 0.0
+	_update_visual()
 	var falling_speed: float = velocity.y
 	move_and_slide()
 	if falling_speed > 80.0:
@@ -77,3 +79,15 @@ func _physics_process(delta: float) -> void:
 			var body := collision.get_collider()
 			if collision.get_normal().y < -0.5 and body.is_in_group("enemies"):
 				body.get_node("Combat").stun(0.45)
+
+
+func _update_visual() -> void:
+	sprite.flip_h = combat.facing < 0.0
+	if combat.attacking:
+		sprite.texture = $SpriteFrames.get_meta("punch")
+	elif combat.crouching:
+		sprite.texture = $SpriteFrames.get_meta("crouch")
+	elif not is_on_floor():
+		sprite.texture = $SpriteFrames.get_meta("guard")
+	else:
+		sprite.texture = $SpriteFrames.get_meta("idle")

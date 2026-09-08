@@ -104,7 +104,7 @@ func _run() -> void:
 	await _frames(3)
 	Input.action_press("move_right")
 	await _frames(40)
-	_check(player.position.x > 700.0, "Enemy one-way body must not block side movement")
+	_check(is_equal_approx(player.position.x, 570.0), "Player should remain anchored while direction is held")
 	_check(not player_combat.attacking, "Holding direction must not repeatedly punch")
 	Input.action_release("move_right")
 	var lethal = enemy_combat.attack.duplicate()
@@ -129,5 +129,7 @@ func _run() -> void:
 		await _frames(110)
 		_check(arena.defeated == 1, "Enemy death should count once")
 		_check(get_nodes_in_group("enemies").size() == 1, "Defeating enemy should start a new encounter")
+		if get_nodes_in_group("enemies").size() == 1:
+			_check(get_nodes_in_group("enemies")[0].position.x > 576.0, "Next encounter should arrive from the opposite side")
 	print("Combat check: %s" % ("PASS" if failures == 0 else "FAIL"))
 	quit(0 if failures == 0 else 1)

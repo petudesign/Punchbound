@@ -20,7 +20,7 @@ func _process(delta: float) -> void:
 		return
 	var hp: int = player.get_node("Combat").health
 	status.text = "PUNCHBOUND / COMBAT LAB     HP %d / 100     DEFEATED %d\n" % [hp, defeated]
-	status.text += "A/D or Left/Right: move + punch   W/Up: jump   S/Down: crouch   R: restart\n"
+	status.text += "A/D or Left/Right: turn + punch   W/Up: jump   S/Down: crouch   R: restart\n"
 	status.text += "Crouch + jump: uppercut. Land on enemies to stun. Yellow = incoming high punch." if hp > 0 else "DOWN — Press R or use Restart to try again."
 	if not encounters_enabled or hp <= 0:
 		return
@@ -33,11 +33,11 @@ func _process(delta: float) -> void:
 
 func _spawn_encounter() -> void:
 	round_number += 1
-	# First learn one opponent; later encounters cap at two, without HP inflation.
+	# Introduce one side at a time, then bring pressure from both sides.
 	var count: int = 1 if round_number <= 2 else 2
 	for index in range(count):
 		var enemy = ENEMY.instantiate()
-		var left_side: bool = player.position.x > 576.0 if count == 1 else index == 0
+		var left_side: bool = ((round_number + index) % 2) == 1
 		enemy.position = Vector2(80 if left_side else 1072, 560)
 		enemy.target = player
 		add_child(enemy)

@@ -126,8 +126,6 @@ func _draw() -> void:
 	var body_height: float = 28.0 if crouching else 64.0
 	if _flash > 0.0:
 		draw_rect(Rect2(-21, -body_height - 2, 42, body_height + 4), Color.WHITE)
-	# Eyes show facing even when stationary.
-	draw_circle(Vector2(facing * 11.0, -body_height + 12.0), 4.0, Color(0.04, 0.07, 0.1))
 	if enemy:
 		draw_rect(Rect2(-23, -78, 46, 5), Color(0.2, 0.2, 0.25))
 		draw_rect(Rect2(-23, -78, 46.0 * health / max_health, 5), Color(1.0, 0.4, 0.36))
